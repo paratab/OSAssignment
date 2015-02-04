@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <glib.h>
 
 gint sort_strcmp(guint *a,guint *b);
+gint sort_intcmp(gconstpointer a,gconstpointer b);
 
 int main(int argc, char *argv[]){
 
 	GDir *dir = NULL;
 	const gchar *fname = NULL;
+	const gchar *output = "optext";
 	gchar *ctemp;
 	GString *word = g_string_new(NULL);
 	char c;
@@ -66,24 +69,36 @@ int main(int argc, char *argv[]){
 	//	printf("%s,",g_ptr_array_index(dict,i));
 	//}
 	//printf("\n");
-	printf("%d\n",dict->len);
-	/*for( i = 0;i < (dict->len);i++){
+
+	g_chdir("..");
+	file = fopen(output,"w");
+	fprintf(file, "%d\n",dict->len);
+	for( i = 0;i < (dict->len);i++){
 		//printf("loop\n");
 		ctemp = g_ptr_array_index(dict,i);
 		list = g_hash_table_lookup(hash,ctemp);
-		list = g_slist_sort(list,(GCompareFunc)g_strcmp0);
-		printf("%s : %d : ",ctemp,g_slist_length(list));
+		list = g_slist_sort(list,(GCompareFunc)sort_intcmp);
+		fprintf(file,"%s:%d:",ctemp,g_slist_length(list));
 		while(g_slist_next(list) != NULL){
-			printf("%s,",list->data);
+			fprintf(file,"%s,",list->data);
 			list = g_slist_next(list);
 		}
-		printf("%s\n",list->data);
+		fprintf(file,"%s\n",list->data);
 		g_slist_free (list);
-	}*/
+	}
 	g_hash_table_destroy (hash);
+	fclose(file);
 	return 0;
 }
 
 gint sort_strcmp(guint *a,guint *b){
 	return g_strcmp0(GUINT_TO_POINTER(*a),GUINT_TO_POINTER(*b));
+}
+gint sort_intcmp(gconstpointer a,gconstpointer b){
+	int c = 0,d = 0;
+	c = atoi(a);
+	d = atoi(b);
+	if(c<d)return -1;
+	else if(c==d) return 0;
+	else return 1;
 }
