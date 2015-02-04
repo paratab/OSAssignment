@@ -59,16 +59,8 @@ int main(int argc, char *argv[]){
 		} 
 		g_dir_close(dir);
 	}
-	//printf("\n");
-	//for( i = 0;i < (dict->len);i++){
-	//	printf("%s,",g_ptr_array_index(dict,i));
-	//}
-	//printf("\n");
+
 	g_ptr_array_sort(dict,(GCompareFunc)sort_strcmp);
-	//for( i = 0;i < (dict->len);i++){
-	//	printf("%s,",g_ptr_array_index(dict,i));
-	//}
-	//printf("\n");
 
 	g_chdir("..");
 	file = fopen(output,"w");
@@ -88,6 +80,7 @@ int main(int argc, char *argv[]){
 	}
 	g_hash_table_destroy (hash);
 	fclose(file);
+
 	return 0;
 }
 
