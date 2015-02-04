@@ -66,7 +66,6 @@ int main(int argc, char *argv[]){
 	file = fopen(output,"w");
 	fprintf(file, "%d\n",dict->len);
 	for( i = 0;i < (dict->len);i++){
-		//printf("loop\n");
 		ctemp = g_ptr_array_index(dict,i);
 		list = g_hash_table_lookup(hash,ctemp);
 		list = g_slist_sort(list,(GCompareFunc)sort_intcmp);
