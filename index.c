@@ -10,7 +10,7 @@ int main(int argc, char *argv[]){
 	GDir *dir = NULL;
 	const gchar *fname = NULL;
 	const gchar *output = "optext";
-	gchar *ctemp;
+	gchar *ctemp,*ftemp;
 	GString *word = g_string_new(NULL);
 	char c;
 	FILE *file;
@@ -30,6 +30,7 @@ int main(int argc, char *argv[]){
 			g_string_truncate(word,(word->len)-4);
 			fname = g_strdup(word->str);
 			g_string_erase(word,0,-1);
+			ftemp = g_strdup(fname);
 
 
 			if(!file) {
@@ -42,14 +43,14 @@ int main(int argc, char *argv[]){
 					g_string_append_c(word,tolower(c)); 
 				}else if(word->len >0){
 					if((list = g_hash_table_lookup(hash,word->str)) == NULL){
-						list = g_slist_prepend(list,g_strdup(fname));
+						list = g_slist_prepend(list,ftemp);
 						ctemp = g_strdup(word->str); // New index of word prevent changing string
 						g_hash_table_insert(hash,ctemp,list);
 						g_ptr_array_add(dict,ctemp);
 						g_string_erase(word,0,-1);	
 						i++;
 					}else{
-						if(g_strcmp0(fname,list->data)!=0) list = g_slist_prepend(list,g_strdup(fname));
+						if(g_strcmp0(fname,list->data)!=0) list = g_slist_prepend(list,ftemp);
 						g_hash_table_insert(hash,word->str,list);
 						g_string_erase(word,0,-1);	
 					}
@@ -87,10 +88,5 @@ gint sort_strcmp(guint *a,guint *b){
 	return g_strcmp0(GUINT_TO_POINTER(*a),GUINT_TO_POINTER(*b));
 }
 gint sort_intcmp(gconstpointer a,gconstpointer b){
-	int c = 0,d = 0;
-	c = atoi(a);
-	d = atoi(b);
-	if(c<d)return -1;
-	else if(c==d) return 0;
-	else return 1;
+	 return atoi(a) - atoi(b);
 }
