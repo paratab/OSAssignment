@@ -7,7 +7,6 @@ gint sort_intcmp(guint *a,guint *b);
 
 int main(int argc, char *argv[]){
 
-	GDir *dir = NULL;
 	const gchar *output = "optext";
 	gchar *ctemp,*ftemp,fname[20];
 	GString *word = g_string_new(NULL);
@@ -16,14 +15,14 @@ int main(int argc, char *argv[]){
 	GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal);
 	GPtrArray *dict = g_ptr_array_new();
 	GPtrArray *farray;
-	gint i = 0,j=0,filenum=1;
+	gint i = 0,j=0,filenum = 1;
 	int *num;
 
 	if(argc>1){
 		g_chdir(argv[1]); // change dir to /data to open file
 		while(1){ // Get Filename at random
 			num = g_new(int,1);
-			*num = filenum++;
+			*num = filenum ++;
 			sprintf(fname,"file%d.txt",*num);
 			file = fopen(fname,"r");
 
@@ -53,7 +52,6 @@ int main(int argc, char *argv[]){
 			} while(c != EOF);
 			fclose(file);
 		} 
-		//g_dir_close(dir);
 	}
 
 	g_ptr_array_sort(dict,(GCompareFunc)sort_strcmp);
@@ -75,7 +73,6 @@ int main(int argc, char *argv[]){
 	}
 	g_hash_table_destroy (hash);
 	fclose(file);
-
 	return 0;
 }
 
