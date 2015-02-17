@@ -6,8 +6,6 @@ gint sort_strcmp(guint *a,guint *b);
 gint sort_intcmp(guint *a,guint *b);
 
 int main(int argc, char *argv[]){
-
-	const gchar *output = "optext";
 	gchar *ctemp,*ftemp,fname[20];
 	GString *word = g_string_new(NULL);
 	char c;
@@ -17,15 +15,12 @@ int main(int argc, char *argv[]){
 	GPtrArray *farray;
 	gint i = 0,j=0,filenum = 1;
 	int *num;
-
 	if(argc>1){
-		g_chdir(argv[1]); // change dir to /data to open file
 		while(1){ // Get Filename at random
 			num = g_new(int,1);
 			*num = filenum ++;
-			sprintf(fname,"file%d.txt",*num);
+			sprintf(fname,"%s/file%d.txt",argv[1],*num);
 			file = fopen(fname,"r");
-
 			if(!file) {
 				break;
 			}
@@ -53,11 +48,8 @@ int main(int argc, char *argv[]){
 			fclose(file);
 		} 
 	}
-
 	g_ptr_array_sort(dict,(GCompareFunc)sort_strcmp);
-
-	g_chdir("..");
-	file = fopen(output,"w");
+	file = fopen("output","w");
 	fprintf(file,"%d\n",dict->len);
 	for( i = 0;i < (dict->len);i++){
 		ctemp = g_ptr_array_index(dict,i);
